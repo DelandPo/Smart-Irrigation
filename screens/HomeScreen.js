@@ -1,11 +1,12 @@
 import React from "react";
 import { Platform, StyleSheet, View } from "react-native";
+import { Body, List, ListItem, Text } from "native-base";
 
 import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: "Graph Data"
+    title: "Soil Graph Data"
   };
   constructor(props) {
     super(props);
@@ -13,16 +14,35 @@ export default class HomeScreen extends React.Component {
 
   render() {
     const data = [
-      { quarter: 1, earnings: 13000 },
-      { quarter: 2, earnings: 16500 },
-      { quarter: 3, earnings: 14250 },
-      { quarter: 4, earnings: 19000 }
+      { day: 1, humidityLevel: 50 },
+      { day: 2, humidityLevel: 30 },
+      { day: 3, humidityLevel: 20 },
+      { day: 4, humidityLevel: 80 },
+      { day: 6, humidityLevel: 80 },
+      { day: 8, humidityLevel: 80 },
+      { day: 10, humidityLevel: 80 }
     ];
     return (
-      <View style={styles.container}>
-        <VictoryChart width={350} theme={VictoryTheme.material}>
-          <VictoryBar data={data} x="quarter" y="earnings" />
-        </VictoryChart>
+      <View>
+        <View style={{ alignItems: "center" }}>
+          <VictoryChart width={400} theme={VictoryTheme.material}>
+            <VictoryBar data={data} x="day" y="humidityLevel" />
+          </VictoryChart>
+        </View>
+        <View>
+          <List
+            dataArray={data}
+            renderRow={(item, index) => (
+              <ListItem first={index === 0} last={index === data.length - 1}>
+                <Body>
+                  <Text style={{}}>
+                    {`Day ${item.day} : Humidity Level : ${item.humidityLevel}`}
+                  </Text>
+                </Body>
+              </ListItem>
+            )}
+          />
+        </View>
       </View>
     );
   }
@@ -31,7 +51,15 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    marginLeft: 50,
+    marginRight: 50,
+    marginTop: 50
+  },
+  tableView: {
+    flex: 1,
+    marginLeft: 50,
+    marginRight: 50,
+    marginTop: 50
   },
   developmentModeText: {
     marginBottom: 20,

@@ -1,6 +1,24 @@
 import React from "react";
 import { ExpoConfigView } from "@expo/samples";
-import { View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet, Platform, Alert } from "react-native";
+import {
+  Container,
+  Header,
+  Content,
+  List,
+  ListItem,
+  Text,
+  Icon,
+  Left,
+  Body,
+  Right,
+  Switch,
+  Input,
+  Form,
+  Item,
+  Label,
+  Button
+} from "native-base";
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: "Settings"
@@ -9,7 +27,61 @@ export default class SettingsScreen extends React.Component {
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
-    return <View style={styles.container} />;
+    return (
+      <Container>
+        <Content>
+          <ListItem icon>
+            <Body>
+              <Text>Auto Water</Text>
+            </Body>
+            <Right>
+              <Switch value={false} />
+            </Right>
+          </ListItem>
+          <Form>
+            <Item floatingLabel>
+              <Label>Minimum Threshold</Label>
+              <Input />
+            </Item>
+            <Item floatingLabel last>
+              <Label>Water Distribution</Label>
+              <Input />
+            </Item>
+            <Item floatingLabel last>
+              <Label>Water Timer (Count/Hour)</Label>
+              <Input />
+            </Item>
+          </Form>
+          <Button
+            style={{
+              alignSelf: "center",
+              marginTop: 50,
+              height: 50,
+              width: 100
+            }}
+            success
+            onPress={() => {
+              Alert.alert(
+                "Sucess",
+                "Preferences saved sucessfully!",
+                [{ text: "OK" }],
+                { cancelable: false }
+              );
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+                alignSelf: "center",
+                justifyContent: "center"
+              }}
+            >
+              Save
+            </Text>
+          </Button>
+        </Content>
+      </Container>
+    );
   }
 }
 
