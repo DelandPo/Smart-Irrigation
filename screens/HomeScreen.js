@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform, StyleSheet, View } from "react-native";
-import { Body, List, ListItem, Text } from "native-base";
-
+import { Body, List, ListItem, Text, Button } from "native-base";
+import axios from "axios";
 import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 
 export default class HomeScreen extends React.Component {
@@ -10,33 +10,72 @@ export default class HomeScreen extends React.Component {
   };
   constructor(props) {
     super(props);
+    this.state = {
+      data: [{ dayCount: 1, moistureLevel: 50 }]
+    };
   }
-
+  async componentDidMount() {
+    let response = [];
+    try {
+      response = await axios.get(
+        "http://node-express-env.hhkvipq4ps.us-west-2.elasticbeanstalk.com/get-water-data"
+      );
+      this.setState({ data: response.data });
+    } catch (err) {
+      console.error(err);
+    }
+  }
   render() {
-    const data = [
-      { day: 1, humidityLevel: 50 },
-      { day: 2, humidityLevel: 30 },
-      { day: 3, humidityLevel: 20 },
-      { day: 4, humidityLevel: 80 },
-      { day: 6, humidityLevel: 80 },
-      { day: 8, humidityLevel: 80 },
-      { day: 10, humidityLevel: 80 }
-    ];
     return (
       <View>
+        <Button
+          style={{
+            alignSelf: "left",
+            marginTop: 50,
+            height: 50,
+            width: 100
+          }}
+          success
+          onPress={async () => {
+            let response = [];
+            try {
+              response = await axios.get(
+                "http://node-express-env.hhkvipq4ps.us-west-2.elasticbeanstalk.com/get-water-data"
+              );
+              this.setState({ data: response.data });
+            } catch (err) {
+              console.error(err);
+            }
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              alignSelf: "center",
+              justifyContent: "center"
+            }}
+          >
+            Refresh
+          </Text>
+        </Button>
         <View style={{ alignItems: "center" }}>
           <VictoryChart width={400} theme={VictoryTheme.material}>
-            <VictoryBar data={data} x="day" y="humidityLevel" />
+            <VictoryBar data={this.state.data} x="dayCount" y="moistureLevel" />
           </VictoryChart>
         </View>
         <View>
           <List
-            dataArray={data}
+            dataArray={this.state.data}
             renderRow={(item, index) => (
-              <ListItem first={index === 0} last={index === data.length - 1}>
+              <ListItem
+                first={index === 0}
+                last={index === this.state.data.length - 1}
+              >
                 <Body>
                   <Text style={{}}>
-                    {`Day ${item.day} : Humidity Level : ${item.humidityLevel}`}
+                    {`Day ${item.dayCount} : Moisture Level : ${
+                      item.moistureLevel
+                    }`}
                   </Text>
                 </Body>
               </ListItem>
